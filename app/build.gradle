@@ -22,7 +22,18 @@ android {
     applicationId "com.google.grafika"
     minSdkVersion 14
     targetSdkVersion 28
+      externalNativeBuild {
+          cmake {
+              cppFlags ''
+          }
+      }
   }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
 }
 
 dependencies {

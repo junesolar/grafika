@@ -7,7 +7,7 @@ class SampleActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(GLView(this))
+        setContentView(NativeGLView(this))
     }
 
     override fun onDestroy() {
