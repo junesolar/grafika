@@ -9,6 +9,7 @@ import android.view.SurfaceView
 
 class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callback {
 
+    private var mNativeRenderPtr: Long = -1
 
     companion object {
         const val TAG = "GLView"
@@ -28,7 +29,7 @@ class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callb
             "surfaceCreated size=" + width + "x" + height +
                     " holder=" + holder
         )
-        nativeWindowCreated(context.assets, holder?.surface)
+        mNativeRenderPtr = nativeWindowCreated(context.assets, holder?.surface)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -36,15 +37,15 @@ class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callb
             "surfaceChanged fmt=" + format + " size=" + width + "x" + height +
                     " holder=" + holder
         )
-        nativeWindowChange(height, width)
+        nativeWindowChange(mNativeRenderPtr, height, width)
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         Log.d(TAG, "surfaceDestroyed holder=$holder")
-        nativeDestroy()
+        nativeDestroy(mNativeRenderPtr)
     }
 
-    external fun nativeWindowCreated(assetManager: AssetManager, surface: Surface?)
-    external fun nativeWindowChange(height: Int, width: Int)
-    external fun nativeDestroy()
+    external fun nativeWindowCreated(assetManager: AssetManager, surface: Surface?): Long
+    external fun nativeWindowChange(nativeRenderPtr: Long, height: Int, width: Int)
+    external fun nativeDestroy(nativeRenderPtr: Long)
 }

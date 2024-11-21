@@ -2,4 +2,5 @@ build
 .gradle
 .idea
 *.iml
+app/.cxx
 local.properties

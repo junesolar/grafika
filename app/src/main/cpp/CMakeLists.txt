@@ -27,14 +27,17 @@ project("grafika")
 # used in the AndroidManifest.xml file.
 include_directories(
         util
+        glm
         egl
+        render
 )
 
 file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/*.cpp
         ${CMAKE_SOURCE_DIR}/util/*.cpp
-        ${CMAKE_SOURCE_DIR}/egl/*.cpp
-)
+        ${CMAKE_SOURCE_DIR}/render/*.cpp
+        ${CMAKE_SOURCE_DIR}/glm/*.cpp
+        ${CMAKE_SOURCE_DIR}/egl/*.cpp)
 
 add_library(${CMAKE_PROJECT_NAME} SHARED
     # List C/C++ source files with relative paths to this CMakeLists.txt.
