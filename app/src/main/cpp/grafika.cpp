@@ -29,6 +29,8 @@ Java_org_joe_sample_NativeGLView_nativeWindowChange(JNIEnv *env, jobject thiz,
 extern "C"
 JNIEXPORT void JNICALL
 Java_org_joe_sample_NativeGLView_nativeDestroy(JNIEnv *env, jobject thiz, jlong native_render_ptr) {
-    reinterpret_cast<NativeRender *>(native_render_ptr)->onWindowDestroy();
+    auto nativeRender = reinterpret_cast<NativeRender *>(native_render_ptr);
+    nativeRender->onWindowDestroy();
+    delete nativeRender;
 }
 

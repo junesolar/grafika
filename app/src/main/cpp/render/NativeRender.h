@@ -8,6 +8,7 @@
 #include <memory>
 #include "../egl/EglCore.h"
 #include "WindowSurface.h"
+#include "BaseShape.h"
 
 
 class NativeRender {
@@ -19,8 +20,9 @@ public:
     void onWindowDestroy();
 
 private:
-    std::unique_ptr<EglCore> eglCore{nullptr};
+    EglCore eglCore{nullptr, FLAG_RECORDABLE};
     std::unique_ptr<WindowSurface> windowSurface{nullptr};
+    std::unique_ptr<BaseShape> shape{nullptr};
 };
 
 #endif //GRAFIKA_NATIVERENDER_H

@@ -29,6 +29,7 @@ include_directories(
         util
         glm
         egl
+        shape
         render
 )
 
@@ -36,6 +37,7 @@ file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/*.cpp
         ${CMAKE_SOURCE_DIR}/util/*.cpp
         ${CMAKE_SOURCE_DIR}/render/*.cpp
+        ${CMAKE_SOURCE_DIR}/shape/*.cpp
         ${CMAKE_SOURCE_DIR}/glm/*.cpp
         ${CMAKE_SOURCE_DIR}/egl/*.cpp)
 
