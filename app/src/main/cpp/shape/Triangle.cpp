@@ -2,9 +2,11 @@
 // Created by zhuyong.joe on 2024/11/23.
 //
 #include "Triangle.h"
+
+#include <utility>
 #include "LogUtil.h"
 
-Triangle::Triangle() {
+Triangle::Triangle(std::shared_ptr<IFileLoader> fileLoader) : BaseShape(std::move(fileLoader)) {
     char vShaderStr[] =
             "#version 300 es                          \n"
             "layout(location = 0) in vec4 vPosition;  \n"

@@ -30,6 +30,7 @@ include_directories(
         glm
         egl
         shape
+        platform
         render
 )
 
@@ -38,6 +39,7 @@ file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/util/*.cpp
         ${CMAKE_SOURCE_DIR}/render/*.cpp
         ${CMAKE_SOURCE_DIR}/shape/*.cpp
+        ${CMAKE_SOURCE_DIR}/platform/*.cpp
         ${CMAKE_SOURCE_DIR}/glm/*.cpp
         ${CMAKE_SOURCE_DIR}/egl/*.cpp)
 
@@ -45,6 +47,13 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
     # List C/C++ source files with relative paths to this CMakeLists.txt.
     ${src-files}
 )
+
+find_library( # Sets the name of the path variable.
+        log-lib
+
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log )
 
 # Specifies libraries CMake should link to your target library. You
 # can link libraries from various origins, such as libraries defined in this

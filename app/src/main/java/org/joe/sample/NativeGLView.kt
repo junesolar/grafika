@@ -1,13 +1,13 @@
 package org.joe.sample
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import org.joe.sample.utils.loadRGBAImageFromAsset
 
-class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callback {
+class NativeGLView(context: Context): SurfaceView(context), SurfaceHolder.Callback {
 
     private var mNativeRenderPtr: Long = -1
 
@@ -22,6 +22,7 @@ class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callb
 
     init {
         holder.addCallback(this)
+        mNativeRenderPtr = nativeInit()
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
@@ -29,7 +30,7 @@ class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callb
             "surfaceCreated size=" + width + "x" + height +
                     " holder=" + holder
         )
-        mNativeRenderPtr = nativeWindowCreated(context.assets, holder?.surface)
+        nativeWindowCreated(mNativeRenderPtr, holder?.surface)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -45,7 +46,13 @@ class NativeGLView (context: Context): SurfaceView(context), SurfaceHolder.Callb
         nativeDestroy(mNativeRenderPtr)
     }
 
-    external fun nativeWindowCreated(assetManager: AssetManager, surface: Surface?): Long
+    //call by native
+    fun loadImage(resName: String): ByteArray? {
+        return loadRGBAImageFromAsset(context, resName)
+    }
+
+    external fun nativeWindowCreated(nativeRenderPtr: Long, surface: Surface?)
     external fun nativeWindowChange(nativeRenderPtr: Long, height: Int, width: Int)
     external fun nativeDestroy(nativeRenderPtr: Long)
+    external fun nativeInit(): Long
 }

@@ -6,15 +6,17 @@
 #define GRAFIKA_BASESHAPE_H
 
 #include "../util/GLUtils.h"
+#include "IFileLoader.h"
 
 class BaseShape {
 public:
-    BaseShape() = default;
-    ~BaseShape() = default;
+    BaseShape(std::shared_ptr<IFileLoader> fileLoader):fileLoader(fileLoader){};
+    virtual ~BaseShape() = default;
     virtual void draw() = 0;
 
 protected:
     GLuint m_ProgramObj = GL_NONE;
+    std::shared_ptr<IFileLoader> fileLoader{nullptr};
 };
 
 #endif //GRAFIKA_BASESHAPE_H

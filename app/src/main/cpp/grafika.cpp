@@ -11,13 +11,11 @@ jlong jlongFromPointer(void* ptr) {
 }
 
 extern "C"
-JNIEXPORT jlong JNICALL
+JNIEXPORT void JNICALL
 Java_org_joe_sample_NativeGLView_nativeWindowCreated(JNIEnv *env, jobject thiz,
-                                                     jobject asset_manager, jobject surface) {
-    NativeRender* nativeRender = new NativeRender();
+                                                     jlong native_render_ptr, jobject surface) {
     ANativeWindow *window = ANativeWindow_fromSurface(env, surface);
-    nativeRender->onWindowCreate(window);
-    return jlongFromPointer(nativeRender);
+    reinterpret_cast<NativeRender *>(native_render_ptr)->onWindowCreate(window);
 }
 extern "C"
 JNIEXPORT void JNICALL
@@ -34,3 +32,10 @@ Java_org_joe_sample_NativeGLView_nativeDestroy(JNIEnv *env, jobject thiz, jlong 
     delete nativeRender;
 }
 
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_org_joe_sample_NativeGLView_nativeInit(JNIEnv *env, jobject thiz) {
+    jobject jFileLoader = env->NewGlobalRef(thiz);
+    NativeRender* nativeRender = new NativeRender(env, jFileLoader);
+    return jlongFromPointer(nativeRender);
+}
