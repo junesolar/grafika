@@ -35,7 +35,6 @@ Java_org_joe_sample_NativeGLView_nativeDestroy(JNIEnv *env, jobject thiz, jlong 
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_org_joe_sample_NativeGLView_nativeInit(JNIEnv *env, jobject thiz) {
-    jobject jFileLoader = env->NewGlobalRef(thiz);
-    NativeRender* nativeRender = new NativeRender(env, jFileLoader);
+    NativeRender* nativeRender = new NativeRender(env, thiz);
     return jlongFromPointer(nativeRender);
 }

@@ -7,11 +7,13 @@
 #include <GLES3/gl3.h>
 
 
-NativeRender::NativeRender(JNIEnv *env, jobject jFileLoader):env(env),jFileLoader(jFileLoader) {
-    fileLoaderImpl = std::make_unique<AndroidFileLoader>(env, jFileLoader);
+NativeRender::NativeRender(JNIEnv *env, jobject jFileLoader):env(env) {
+    this->jFileLoader = env->NewGlobalRef(jFileLoader);
+    fileLoaderImpl = std::make_unique<AndroidFileLoader>(env, this->jFileLoader);
 }
 
 NativeRender::~NativeRender() {
+    env->DeleteGlobalRef(jFileLoader);
 }
 
 void NativeRender::onWindowCreate(ANativeWindow *window) {
