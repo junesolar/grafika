@@ -23,6 +23,8 @@ private:
     EglCore eglCore{nullptr, FLAG_RECORDABLE};
     std::unique_ptr<WindowSurface> windowSurface{nullptr};
     std::unique_ptr<BaseShape> shape{nullptr};
+    int mScreenW;
+    int mScreenH;
 };
 
 #endif //GRAFIKA_NATIVERENDER_H

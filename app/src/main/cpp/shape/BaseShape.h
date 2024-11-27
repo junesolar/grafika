@@ -10,9 +10,10 @@
 
 class BaseShape {
 public:
-    BaseShape() {};
+    BaseShape() = default;
     virtual ~BaseShape() = default;
     virtual void draw() = 0;
+    virtual void draw(int width, int height){};
 
 protected:
     GLuint m_ProgramObj = GL_NONE;

@@ -7,13 +7,12 @@
 
 
 #include "BaseShape.h"
-#include "../platform/IFileLoader.h"
 
 class Image: public BaseShape{
 public:
     Image();
-    ~Image();
-    virtual void draw();
+    ~Image() override;
+    void draw() override;
 
 private:
     GLuint m_TextureId;

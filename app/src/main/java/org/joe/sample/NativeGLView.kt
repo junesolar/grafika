@@ -7,7 +7,6 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import org.joe.sample.service.FileLoadService
 import org.joe.sample.service.ServiceManager
-import org.joe.sample.utils.loadRGBAImageFromAsset
 
 class NativeGLView(context: Context): SurfaceView(context), SurfaceHolder.Callback {
 

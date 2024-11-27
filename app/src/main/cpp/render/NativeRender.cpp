@@ -4,6 +4,7 @@
 #include "NativeRender.h"
 #include "Triangle.h"
 #include "Image.h"
+#include "FBOImage.h"
 #include <GLES3/gl3.h>
 
 
@@ -16,13 +17,19 @@ NativeRender::~NativeRender() {
 void NativeRender::onWindowCreate(ANativeWindow *window) {
     windowSurface = std::make_unique<WindowSurface>(&eglCore, window, false);
     windowSurface->makeCurrent();
-    shape = std::make_unique<Image>();
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    shape = std::make_unique<FBOImage>();
     shape->draw();
     windowSurface->swapBuffers();
 }
 
 void NativeRender::onWindowSizeChanged(int width, int height) {
     glViewport(0, 0, width, height);
+    mScreenH = height;
+    mScreenW = width;
+    shape->draw(width, height);
+    windowSurface->swapBuffers();
 }
 
 void NativeRender::onWindowDestroy() {

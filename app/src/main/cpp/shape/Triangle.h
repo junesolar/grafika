@@ -10,8 +10,8 @@
 class Triangle: public BaseShape {
 public:
     Triangle();
-    ~Triangle();
-    virtual void draw();
+    ~Triangle() override;
+    void draw() override;
 };
 
 #endif //GRAFIKA_TRIANGLE_H
