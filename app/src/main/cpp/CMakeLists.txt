@@ -27,18 +27,22 @@ project("grafika")
 # used in the AndroidManifest.xml file.
 include_directories(
         util
+        jni
         glm
         egl
         shape
         platform
+        service
         render
 )
 
 file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/*.cpp
         ${CMAKE_SOURCE_DIR}/util/*.cpp
+        ${CMAKE_SOURCE_DIR}/jni/*.cpp
         ${CMAKE_SOURCE_DIR}/render/*.cpp
         ${CMAKE_SOURCE_DIR}/shape/*.cpp
+        ${CMAKE_SOURCE_DIR}/service/*.cpp
         ${CMAKE_SOURCE_DIR}/platform/*.cpp
         ${CMAKE_SOURCE_DIR}/glm/*.cpp
         ${CMAKE_SOURCE_DIR}/egl/*.cpp)

@@ -11,7 +11,7 @@
 
 class Image: public BaseShape{
 public:
-    Image(std::shared_ptr<IFileLoader> fileLoader);
+    Image();
     ~Image();
     virtual void draw();
 

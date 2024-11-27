@@ -9,7 +9,7 @@
 
 class Triangle: public BaseShape {
 public:
-    Triangle(std::shared_ptr<IFileLoader> fileLoader);
+    Triangle();
     ~Triangle();
     virtual void draw();
 };

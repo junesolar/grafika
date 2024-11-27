@@ -6,7 +6,7 @@
 #include <utility>
 #include "LogUtil.h"
 
-Triangle::Triangle(std::shared_ptr<IFileLoader> fileLoader) : BaseShape(std::move(fileLoader)) {
+Triangle::Triangle() {
     char vShaderStr[] =
             "#version 300 es                          \n"
             "layout(location = 0) in vec4 vPosition;  \n"

@@ -2,8 +2,12 @@
 // Created by zhuyong.joe on 2024/11/24.
 //
 #include "AndroidFileLoader.h"
+#include "../service/service.h"
+#include "jni_helper.h"
 
-AndroidFileLoader::AndroidFileLoader(JNIEnv *env, jobject jFileLoader):env(env),jFileLoader(jFileLoader) {
+REGISTER_SERVICE(IFileLoader, AndroidFileLoader)
+
+AndroidFileLoader::AndroidFileLoader() {
 
 }
 
@@ -11,23 +15,23 @@ AndroidFileLoader::~AndroidFileLoader() {
 
 }
 
-uint8_t *AndroidFileLoader::loadFile(std::string fileName) {
-    jclass nativeGLViewClass = env->FindClass("org/joe/sample/NativeGLView");
-    if (nativeGLViewClass == nullptr) {
-        // Handle error
-        return nullptr;
-    }
 
-    // Get the constructor method ID
-    jmethodID constructor = env->GetMethodID(nativeGLViewClass, "<init>","(Landroid/content/Context;)V");
-    if (constructor == nullptr) {
+void AndroidFileLoader::init(JNIEnv *env, jobject jService) {
+    auto *inst = dynamic_cast<AndroidFileLoader *>(service::GetService<IFileLoader>());
+    inst->jFileLoader = env->NewGlobalRef(jService);
+}
+
+uint8_t *AndroidFileLoader::loadFile(std::string fileName) {
+    JNIEnv* env = xplay::GetEnv();
+    jclass jFileLoaderService = env->FindClass("org/joe/sample/service/FileLoadService");
+    if (jFileLoaderService == nullptr) {
         // Handle error
         return nullptr;
     }
 
     // Locate the instance method `loadImage`
     jmethodID loadImageMethod = env->GetMethodID(
-            nativeGLViewClass,
+            jFileLoaderService,
             "loadImage",
             "(Ljava/lang/String;)[B"
     );
@@ -56,9 +60,23 @@ uint8_t *AndroidFileLoader::loadFile(std::string fileName) {
 
     // Clean up references
     env->DeleteLocalRef(jResName);
-    env->DeleteLocalRef(nativeGLViewClass);
+    env->DeleteLocalRef(jFileLoaderService);
 
     return  buf;
+}
+
+void FileLoaderOnLoad(JNIEnv* env) {
+    jclass jFileloaderClass = env->FindClass("org/joe/sample/service/FileLoadService");
+    const JNINativeMethod  methods[] = {
+            JNI_METHOD_V(AndroidFileLoader::init, init, void())
+    };
+    constexpr int methodsSize = sizeof(methods) / sizeof(methods[0]);
+    env->RegisterNatives(jFileloaderClass, methods, methodsSize);
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+    }
+    env->DeleteLocalRef(jFileloaderClass);
 }
 
 

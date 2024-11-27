@@ -4,8 +4,9 @@
 
 #include "Image.h"
 #include "LogUtil.h"
+#include "service.h"
 
-Image::Image(std::shared_ptr<IFileLoader> fileLoader) : BaseShape(fileLoader) {
+Image::Image() {
     //create RGBA texture
     glGenTextures(1, &m_TextureId);
     glBindTexture(GL_TEXTURE_2D, m_TextureId);
@@ -83,7 +84,7 @@ void Image::draw() {
 
     GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
 
-    imageData = fileLoader->loadFile("image_test.jpg");
+    imageData = service::GetService<IFileLoader>()->loadFile("image_test.jpg");
     if (imageData == nullptr) {
         LOGCATE("Load Image Fail");
         return;

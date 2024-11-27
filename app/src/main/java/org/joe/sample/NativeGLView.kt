@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import org.joe.sample.service.FileLoadService
+import org.joe.sample.service.ServiceManager
 import org.joe.sample.utils.loadRGBAImageFromAsset
 
 class NativeGLView(context: Context): SurfaceView(context), SurfaceHolder.Callback {
@@ -22,7 +24,7 @@ class NativeGLView(context: Context): SurfaceView(context), SurfaceHolder.Callba
 
     init {
         holder.addCallback(this)
-        mNativeRenderPtr = nativeInit()
+        initService()
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
@@ -30,6 +32,7 @@ class NativeGLView(context: Context): SurfaceView(context), SurfaceHolder.Callba
             "surfaceCreated size=" + width + "x" + height +
                     " holder=" + holder
         )
+        mNativeRenderPtr = nativeInit()
         nativeWindowCreated(mNativeRenderPtr, holder?.surface)
     }
 
@@ -46,9 +49,8 @@ class NativeGLView(context: Context): SurfaceView(context), SurfaceHolder.Callba
         nativeDestroy(mNativeRenderPtr)
     }
 
-    //call by native
-    fun loadImage(resName: String): ByteArray? {
-        return loadRGBAImageFromAsset(context, resName)
+    private fun initService() {
+        ServiceManager.registerService(FileLoadService::class.java, FileLoadService(context))
     }
 
     external fun nativeWindowCreated(nativeRenderPtr: Long, surface: Surface?)
