@@ -14,6 +14,7 @@ public:
     virtual ~BaseShape() = default;
     virtual void draw() = 0;
     virtual void draw(int width, int height){};
+    virtual void release(){};
 
 protected:
     GLuint m_ProgramObj = GL_NONE;
